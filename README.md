@@ -98,6 +98,8 @@ Portanto, para rodar os testes no GitHub Actions, realize uma alteração qualqu
 Em seguida, clique na aba `Actions` e veja que os testes foram executados com sucesso no GitHub Actions. 
 Observe as execuções em múltiplos sistemas operacionais (Ubuntu, macOS e Windows) e versões da linguagem Python.
 
+Running Tests Done!
+
 # Commit 2: Creating 10 unit tests
 
 Crie mais dez testes de unidade no arquivo `tests.py`.
