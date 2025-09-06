@@ -102,3 +102,51 @@ def test_add_choice_with_empty_text():
     question = Question(title='q1')
     with pytest.raises(Exception):
         question.add_choice('', True)
+
+# Fixtures
+@pytest.fixture
+def simple_question():
+    return Question(title='Simple Test Question')
+
+@pytest.fixture
+def question_with_choices():
+    question = Question(title='Qual é o maior mamífero?')
+    question.add_choice('Elefante', False)
+    question.add_choice('Tubarão', False)
+    question.add_choice('Cavalo', False)
+    question.add_choice('Baleia', True)
+    return question
+
+@pytest.fixture
+def multiple_choice_question():
+    question = Question(title='Quais são linguagens de programação?', max_selections=3)
+    question.add_choice('Python', True)
+    question.add_choice('JavaScript', True)
+    question.add_choice('HTML', False)
+    question.add_choice('Java', True)
+    return question
+
+@pytest.fixture
+def question_with_high_points():
+    return Question(title='Questão difícil', points=10)
+
+
+def test_question_with_choices_has_correct_answer(question_with_choices):
+    correct_ids = question_with_choices._find_correct_choice_ids()
+    assert len(correct_ids) == 1
+    assert correct_ids[0] == 4
+
+def test_multiple_choice_question_allows_multiple_selections(multiple_choice_question):
+    python_id = multiple_choice_question.choices[0].id
+    javascript_id = multiple_choice_question.choices[1].id
+    html_id = multiple_choice_question.choices[2].id
+    java_id = multiple_choice_question.choices[3].id
+    
+    result = multiple_choice_question.correct_selected_choices([python_id, javascript_id, java_id])
+    assert len(result) == 3
+    assert python_id in result
+    assert javascript_id in result
+    assert java_id in result
+    
+    result = multiple_choice_question.correct_selected_choices([python_id, html_id])
+    assert result == [python_id]
